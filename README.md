@@ -9,7 +9,7 @@ GSM Modem Autoprobes for RIPE
 * USB HUB (if necessary)
 
 ## Testbed
-* Raspberry Pi 3 with [Fedora Core 27 ARM](https://arm.fedoraproject.org/))
+* Raspberry Pi 3 with [Fedora Core 27 ARM](https://arm.fedoraproject.org/)
 * Unmanaged Switch HUB 8 port
 * RIPE Atlas Probes (2 devices)
 * USB LTE Modems (2 devices)
@@ -18,6 +18,32 @@ GSM Modem Autoprobes for RIPE
 ![alt text](images/raspi-probes-controller-router_physical.png "RIPE Atlas GSM Measurements")
 
 ## Quick Start
+Make sure in your Linux system was installed and configured DHCP Server. This is example testbed configuration:
+```
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp-server/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+#
+option domain-name     "c.jkt-probes.xtremenitro.org";
+# specify DNS server's hostname or IP address
+option domain-name-servers     8.8.8.8,8.8.4.4;
+# default lease time
+default-lease-time 600;
+# max lease time
+max-lease-time 7200;
+# this DHCP server to be declared valid
+authoritative;
+# specify network address and subnet mask
+subnet 192.168.255.0 netmask 255.255.255.248 {
+    range 192.168.255.2 192.168.255.6;
+    option broadcast-address 192.168.255.7;
+    option routers 192.168.255.1;
+    interface eth0;
+}
+```
+
+### Install and Run
 ```
 $ sudo dnf install ModemManager NetworkManager -y
 $ git clone ~dewanggaalam/gsm-ripe.git
